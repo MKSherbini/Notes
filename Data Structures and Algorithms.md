@@ -95,9 +95,9 @@ The common levels in order from best to worst:
 - **O($n!$)**: factorial
 ---
 
-![](_attachments/Data%20Structures%20and%20Algorithms/dbb9814939a46dcf84a784160e25924a.png)
+![](_attachments/Data%20Structures%20and%20Algorithms/IMG-0EE99FE5AAFD4B17E417CF70EAEB1E50.png)
 
-![](_attachments/Data%20Structures%20and%20Algorithms/66caa5cd1cd9dd7ea5c0e35960eb7c80.png)
+![](_attachments/Data%20Structures%20and%20Algorithms/IMG-D7A258C4D780319E9E1432A8976B79AC.png)
 
 ---
 
@@ -107,7 +107,7 @@ The common levels in order from best to worst:
 
 - **Idea**: used to solve problems by dividing the main problem into subproblems, solving them individually and then merging them to find solution to the original problem
 - **Usual Complexity**:
-	- **Time**: O($log_2(n)$)
+	- **Time**: O($nlog_2(n)$)
 	- **Space**: O($n$)
 
 ---
@@ -133,9 +133,8 @@ Examples:
 - **Complexity**:
 	- **Time**: O($n$)
 	- **Space**: O($1$)
-
+ 
 ```C++
-// sponge
 int search(int arr[], int N, int x) {
     for (int i = 0; i < N; i++)
         if (arr[i] == x)
@@ -154,7 +153,7 @@ int search(int arr[], int N, int x) {
 
 ---
 
-![](_attachments/Data%20Structures%20and%20Algorithms/43d67e25f0e3b9af2ad059ce6c99def0.gif)
+![](_attachments/Data%20Structures%20and%20Algorithms/IMG-7D0071D3F8F7E78849488926B0009463.gif)
 
 ---
 
@@ -188,6 +187,7 @@ int binarySearch(int arr[], int low, int high, int x) {
 ```c++
 int binarySearch(int arr[], int low, int high, int x) {
     if (high < low) return -1; 
+    
 	int mid = low + (high - low) / 2;
 
 	// Check if x is present at mid
@@ -236,7 +236,7 @@ There are many Algorithms to achieve this but with varying complexities like:
 	- **Space**: O($1$)
 ---
 
-![](_attachments/Data%20Structures%20and%20Algorithms/f2fa63db66e38f76792a0f208b9549d3.png)
+![](_attachments/Data%20Structures%20and%20Algorithms/IMG-9A1794BDF3BFD106440974616AC552AD.png)
 
 ---
 
@@ -275,7 +275,7 @@ void selectionSort(int arr[], int n) {
 ---
 
 
-![](_attachments/Data%20Structures%20and%20Algorithms/a9754da580463b9d0beca32cb1fd9b75.webp)
+![](_attachments/Data%20Structures%20and%20Algorithms/IMG-BFC7B571DD0E663EC1555B5A31AADBA3.webp)
 
 ---
 
@@ -311,7 +311,7 @@ void bubbleSort(int arr[], int n) {
 
 ---
 
-![](_attachments/Data%20Structures%20and%20Algorithms/6b89d866159edaf274f73b86e22f6555.png)
+![](_attachments/Data%20Structures%20and%20Algorithms/IMG-E89FFBE746C4A2205D775A7BB851A352.png)
 
 ---
 
@@ -412,10 +412,37 @@ void mergeSort(int arr[], int l, int r) {
 ## Two pointers
 
 - **Idea**: works by defining 2 iterators to loop through the data structure, allowing to look at 2 places at the same time
-- **Usual Complexity**:
+- **Complexity**:
 	- **Time**: O($n$)
 	- **Space**: O($1$)
 
+```c++
+bool hasPairSum(vector<int>& arr, int n, int target) {
+    // represents first pointer
+    int i = 0;
+
+    // represents second pointer
+    int j = n - 1;
+
+    while (i < j) {
+        // If we find a pair
+        if (arr[i] + arr[j] == target)
+            return true;
+
+        // If sum of elements at current pointers is less, 
+        // we move towards higher values
+        else if (arr[i] + arr[j] < target)
+            i++;
+
+        // If sum of elements at current pointers is more, 
+        // we move towards lower values 
+        else
+            j--;
+    }
+    
+    return false;
+}
+```
 
 ---
 
@@ -431,10 +458,28 @@ void mergeSort(int arr[], int l, int r) {
 ## Sliding window 
 
 - **Idea**: works by defining 2 iterators to loop through the data structure. allowing to look at the range in between, usual the 2nd iterator adds elements to the range while the 1st removes them
-- **Usual Complexity**:
+- **Complexity**:
 	- **Time**: O($n$)
 	- **Space**: O($1$)
 
+```c++
+int maxSum(int arr[], int n, int k) { // k is window size
+    // Compute sum of first window of size k
+    int max_sum = 0;
+    for (int i = 0; i < k; i++)
+        max_sum += arr[i];
+
+    // Compute sums of remaining windows by removing first element of previous
+    // window and adding last element of current window.
+    int window_sum = max_sum;
+    for (int i = k; i < n; i++) {
+        window_sum += arr[i] - arr[i - k];
+        max_sum = max(max_sum, window_sum);
+    }
+
+    return max_sum;
+}
+```
 
 ---
 
@@ -452,9 +497,20 @@ void mergeSort(int arr[], int l, int r) {
 ##  Prefix sum 
 
 - **Idea**: cache all previous sums to be able to calculate sum of ranges in O(1)
-- **Usual Complexity**:
+- **Complexity**:
 	- **Time**: O($n$) for build, O(1) for use
 	- **Space**: O($n$)
+
+```c++
+void fillPrefixSum(int arr[], int n) {
+    int prefixSum[n];
+    prefixSum[0] = arr[0];
+    
+    // Adding present element with previous element
+    for (int i = 1; i < n; i++)
+        prefixSum[i] = prefixSum[i - 1] + arr[i];
+}
+```
 
 ---
 
@@ -469,10 +525,19 @@ void mergeSort(int arr[], int l, int r) {
 ## Frequency array/map
 
 - **Idea**: count the frequency of elements either by using array index or map
-- **Usual Complexity**:
+- **Complexity**:
 	- **Time**: O($n$)
-	- **Space**: O($k$)
+	- **Space**: O($k$), where `k` is the range of values
 
+```c++
+void fillFrequencyArray(int arr[], int n, int k) {
+    int freq[k] = {0}; // k is 26 for single case alphabet, 58 for both cases
+    
+    // count elements
+    for (int i = 0; i < n; i++)
+        freq[arr[i]]++;
+}
+```
 ---
 
 ### Labs
@@ -485,16 +550,23 @@ void mergeSort(int arr[], int l, int r) {
 ## Graph 
 
 ### Breadth First Search(BFS)
+- **Idea**: iterate through the graph level by level
+- **Usual Complexity**:
+	- **Time**: O($n$)
+	- **Space**: O($m$), where `m` is max number of elements in a level
 
+---
 
 ```c++
 void bfs(TreeNode* root) {
 	queue<TreeNode*> q;
 	q.push(root);
-
+	int lvl = 0;
+	
 	while (!q.empty()) {
 		int c = size(q);
-
+		lvl++;
+		
 		while (c--) {
 			auto cur = q.front();
 			q.pop();
@@ -511,7 +583,6 @@ void bfs(TreeNode* root) {
 ```
 
 
-
 ---
 
 #### Labs
@@ -523,6 +594,12 @@ void bfs(TreeNode* root) {
 ---
 
 ### Depth First Search(DFS)
+- **Idea**: iterate through the graph by visiting the deepest elements first
+- **Usual Complexity**:
+	- **Time**: O($n$)
+	- **Space**: O($d$), where `d` is max depth of the graph
+
+---
 
 **Iterative**:
 ```c++
@@ -544,6 +621,8 @@ void dfs(TreeNode* root) {
 }
 ```
 
+---
+
 
 **Recursive**:
 ```c++
@@ -557,7 +636,6 @@ void dfs(TreeNode* node) {
 ```
 
 
-
 ---
 
 #### Labs
@@ -565,7 +643,6 @@ void dfs(TreeNode* node) {
 - [104. Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
 - [1379. Find a Corresponding Node of a Binary Tree in a Clone of That Tree](https://leetcode.com/problems/find-a-corresponding-node-of-a-binary-tree-in-a-clone-of-that-tree/)
 - [513. Find Bottom Left Tree Value](https://leetcode.com/problems/find-bottom-left-tree-value/)
-
 
 
 ---
@@ -577,23 +654,173 @@ void dfs(TreeNode* node) {
 ---
 
 ### Backtracking
+- **Idea**: try all possible solutions by backtracking steps and retrying
+- **Complexity**:
+	- **Time**: O($2^n$), or O($n!$)
+	- **Space**: O($1$), or O($n$) if keeping track of visits
+- **Demo**: [46. Permutations](https://leetcode.com/problems/permutations/)
 
+```c++
+void permutations(vector<int>& nums, vector<vector<int>>& ans, vector<int> row) {
+	if (row.size() == nums.size()) return ans.push_back(row);
 
-
+	for (int i = 0; i < nums.size(); i++) {
+		if (find(begin(row), end(row), nums[i]) == end(row)) {
+			row.push_back(nums[i]); // do
+			permutations(nums, ans, row);
+			row.pop_back(); // undo
+		}
+	}
+}
+```
 
 ---
 
 ## Dynamic Programing
+- **Idea**: like backtracking but with memoization(saving results of visited subsets/states)
+- **Complexity**:
+	- **Time**: O($n$)
+	- **Space**: O($n$)
+- **Demo**: [72. Edit Distance](https://leetcode.com/problems/edit-distance/) 
 
+---
 
+**Recursion**:
+```c++
+int minDistance(string word1, string word2) {
+	const int OO = 1e8;
+	int n = size(word1), m = size(word2);
+	vector<vector<int>> mem(n, vector<int>(m, -1));
+	function<int(int, int)> f = [&](int i, int j) -> int {
+		if (i >= n)
+			return m - j;
+		if (j >= m)
+			return n - i;
 
+		if (mem[i][j] != -1)
+			return mem[i][j];
+		if (word1[i] == word2[j])
+			return f(i + 1, j + 1);
+
+		int ret = OO;
+		ret = min(ret, 1 + f(i + 1, j));
+		ret = min(ret, 1 + f(i, j + 1));
+		ret = min(ret, 1 + f(i + 1, j + 1));
+		return mem[i][j] = ret;
+	};
+	return f(0, 0);
+}
+```
+
+---
+
+**Tabulation**:
+```c++
+int minDistance(string word1, string word2) {
+	const int OO = 1e8;
+	int n = size(word1), m = size(word2);
+	vector<vector<int>> mem(n + 1, vector<int>(m + 1, 0));
+
+	for (size_t i = 0; i < n; i++)
+		mem[i][m] = n - i;
+	for (size_t j = 0; j < m; j++)
+		mem[n][j] = m - j;
+
+	for (int i = n - 1; i >= 0; i--) {
+		for (int j = m - 1; j >= 0; j--) {
+			int ret = OO;
+			if (word1[i] == word2[j])
+				ret = min(ret, mem[i + 1][j + 1]);
+			else {
+				ret = min(ret, 1 + mem[i + 1][j]);
+				ret = min(ret, 1 + mem[i][j + 1]);
+				ret = min(ret, 1 + mem[i + 1][j + 1]);
+			}
+
+			mem[i][j] = ret;
+		}
+	}
+
+	return mem[0][0];
+}
+```
+
+---
+
+**Space optimization**:
+```c++
+int minDistance(string word1, string word2) {
+	const int OO = 1e8;
+	int n = size(word1), m = size(word2);
+	vector<vector<int>> mem(2, vector<int>(m + 1, 0));
+
+	bool cur = 0, other = 1;
+	for (size_t j = 0; j < m; j++)
+		mem[other][j] = m - j;
+
+	for (int i = n - 1; i >= 0; i--) {
+		mem[cur][m] = n - i;
+		for (int j = m - 1; j >= 0; j--) {
+			int ret = OO;
+			if (word1[i] == word2[j])
+				ret = min(ret, mem[other][j + 1]);
+			else {
+				ret = min(ret, 1 + mem[other][j]);
+				ret = min(ret, 1 + mem[cur][j + 1]);
+				ret = min(ret, 1 + mem[other][j + 1]);
+			}
+
+			mem[cur][j] = ret;
+		}
+		other = cur;
+		cur = !cur;
+	}
+
+	return mem[other][0];
+}
+```
+
+---
+
+### Labs
+
+- [70. Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)
+- [322. Coin Change](https://leetcode.com/problems/coin-change/)
+- [198. House Robber](https://leetcode.com/problems/house-robber/)
 
 ---
 
 ## Monotonic Stack
+- **Idea**: maintain elements in either **increasing** or **decreasing** order to easily find the next **greater** or **smaller** element
+- **Complexity**:
+	- **Time**: O($n$)
+	- **Space**: O($n$)
+- **Demo**: [1475. Final Prices With a Special Discount in a Shop](https://leetcode.com/problems/final-prices-with-a-special-discount-in-a-shop/)
 
+```c++
+vector<int> finalPrices(vector<int>& prices) {
+	int n = size(prices);
+	stack<int> st;
+	for (int i = n - 1; i >= 0; i--) {
+		while (!empty(st) && st.top() > prices[i]) {
+			st.pop();
+		}
+		int deal = empty(st) ? 0 : st.top();
+		st.push(prices[i]);
+		prices[i] -= deal;
+	}
 
+	return prices;
+}
+```
 
+---
+
+### Labs
+
+- [735. Asteroid Collision](https://leetcode.com/problems/asteroid-collision/)
+- [739. Daily Temperatures](https://leetcode.com/problems/daily-temperatures/) 
+- [2751. Robot Collisions](https://leetcode.com/problems/robot-collisions/)
 
 ---
 
@@ -610,12 +837,25 @@ Each data structure has varying efficiencies with each operation and it's all ab
 
 ---
 
+
+---
+
 ## Array
 - **Concept**: a contiguous block of memory is reserved to store blocks of data 
 - **Runtime Complexity**
-	- **Random access**: O(n)
+	- **Random access**: O(1)
 	- **Search**: O(n), (worst case, if target is at the end)
 	- **Insert**: O(n), (worst case, if inserting at the beginning or middle, shifting elements is required)
+	- **Delete**: O(n), (worst case, if deleting from the beginning or middle, shifting elements is required)
+
+---
+
+### Dynamic Array
+- **Concept**: an Array that can be resized, when elements reach a certain usage percent and expands by a certain percent of size
+- **Runtime Complexity**
+	- **Random access**: O(1)
+	- **Search**: O(n), (worst case, if target is at the end)
+	- **Insert**: amortized O(1), but O(n) worst case 
 	- **Delete**: O(n), (worst case, if deleting from the beginning or middle, shifting elements is required)
 
 ---
@@ -777,7 +1017,7 @@ public:
 - [1290. Convert Binary Number in a Linked List to Integer](https://leetcode.com/problems/convert-binary-number-in-a-linked-list-to-integer/) 
 - [876. Middle of the Linked List](https://leetcode.com/problems/middle-of-the-linked-list/) 
 - [206. Reverse Linked List](https://leetcode.com/problems/reverse-linked-list/) 
-- implement LinkedList on array of integers
+- implement LinkedList on integers
 
 ---
 
@@ -991,9 +1231,11 @@ public:
 
 ---
 
-![](_attachments/Data%20Structures%20and%20Algorithms/fb0e91522134df0b1922eead2a3d5b93.jpg)
+![](_attachments/Data%20Structures%20and%20Algorithms/IMG-AFCA3AA67E29F86E899E8D6E1F820D81.jpg)
 
-![](_attachments/Data%20Structures%20and%20Algorithms/2b735256e7c174b7cb11c885a6bfa6a8.png)
+---
+
+![](_attachments/Data%20Structures%20and%20Algorithms/IMG-E10612BDF394D330FF03D85247E6B1C5.png)
 
 
 ---
@@ -1012,9 +1254,11 @@ public:
 
 ---
 
-![](_attachments/Data%20Structures%20and%20Algorithms/cacff075bcfec21ba6ee4f12a5b49ae5.png)
+![](_attachments/Data%20Structures%20and%20Algorithms/IMG-EDB4CA514771668457FB5B10C153492D.png)
 
-![](_attachments/Data%20Structures%20and%20Algorithms/10c82b9db4695709d9e3589e67c3d59e.jpg)
+---
+
+![](_attachments/Data%20Structures%20and%20Algorithms/IMG-D016C2D9F3C0250F5963CE82DDA41EF2.jpg)
 
 ---
 
@@ -1026,7 +1270,9 @@ public:
 	- **Insert**: O(log n) average, O(n) worst case (unbalanced tree)
 	- **Delete**: O(log n) average, O(n) worst case (unbalanced tree)
 
-![](_attachments/Data%20Structures%20and%20Algorithms/6d191b299a4c3ccd2d348892be716e90.webp)
+---
+
+![](_attachments/Data%20Structures%20and%20Algorithms/IMG-7F01C27C6F88329F8FFBE5CB7D71D4D4.webp)
 
 ---
 
@@ -1054,7 +1300,10 @@ public:
 	- **Insert**: O(1) average, O(n) worst-case due to hash collisions.
 	- **Delete**: O(1) average, O(n) worst-case due to hash collisions.
 
-![](_attachments/Data%20Structures%20and%20Algorithms/41cfc85cf9a9b821adc4ce3760d44308.png)
+---
+
+
+![](_attachments/Data%20Structures%20and%20Algorithms/IMG-4B67933BA7FBF1D6DC581201C1A96481.png)
 
 ---
 
@@ -1066,7 +1315,7 @@ public:
 	- **Insert**: O(log n)
 	- **Delete**: O(log n)
 
-![](_attachments/Data%20Structures%20and%20Algorithms/5225994840c4f3e662f6d0948fa0c9ff.png)
+![](_attachments/Data%20Structures%20and%20Algorithms/IMG-F929173D2D860BE9F035C01AB07BB1DF.png)
 
 ---
 
@@ -1095,7 +1344,7 @@ public:
 	- **Insert**: O(1) average, O(n) worst case (if resizing is required)
 	- **Delete**: O(1) average, O(n) worst case (if many collisions)
 
-![](_attachments/Data%20Structures%20and%20Algorithms/6443e1946c0a4353da5a66dded7cc229.png)
+![](_attachments/Data%20Structures%20and%20Algorithms/IMG-BAD2BCB39386F9B4CD9F82B29101E6AD.png)
 
 
 ---
@@ -1122,14 +1371,14 @@ public:
 ---
 
 ## Heap / Priority Queue
-- **Concept**: a Balanced binary tree where for every node the values of its children is less than or equal to its own value
+- **Concept**: a Balanced binary tree where for every node the values of its children is less than or equal to its own value, (can also customize this comparison)
 - **Runtime Complexity**
 	- **Random Access (find min/max)**: O(1)
 	- **Search**: O(n)
 	- **Insert**: O(log n)
 	- **Delete**: O(log n) (removing the root and reheapifying)
 
-![](_attachments/Data%20Structures%20and%20Algorithms/f29e112da8df05d64d930d3d8e8c75d3.png)
+![](_attachments/Data%20Structures%20and%20Algorithms/IMG-5266B2773DA12EEE4239105D03EB88BF.png)
 
 ---
 
@@ -1149,7 +1398,7 @@ public:
 	- **Insert**: O(m), where m is the length of the string being inserted.
 	- **Delete**: O(m), where m is the length of the string being deleted.
 
-![](_attachments/Data%20Structures%20and%20Algorithms/e1ab4c3f00f9f3c28fd101051e9b1865.png)
+![](_attachments/Data%20Structures%20and%20Algorithms/IMG-D016A5CBDD763E277A313BA07BC56D34.png)
 
 ---
 
